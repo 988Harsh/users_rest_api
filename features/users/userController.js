@@ -1,9 +1,7 @@
-const express = require('express')
 const User = require('./user')
-const user_service = require('./user_service')
-const router = new express.Router()
+const user_service = require('./userService')
 
-router.post('/users', async (req, res) => {
+const userPost = async (req, res) => {
     const user = new User(req.body)
     try {
         await user_service.saveUser(user)
@@ -11,18 +9,18 @@ router.post('/users', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-})
+}
 
-router.get('/users', async (req, res) => {
+const userGet = async (req, res) => {
     try {
         const users = await user_service.listUsers()
         res.send(users)
     } catch (e) {
         res.status(500).send()
     }
-})
+}
 
-router.get('/users/:id', async (req, res) => {
+const userGetId = async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -35,9 +33,9 @@ router.get('/users/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-})
+}
 
-router.patch('/users/:id', async (req, res) => {
+const userPatch = async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -57,9 +55,9 @@ router.patch('/users/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-})
+}
 
-router.delete('/users/:id', async (req, res) => {
+const userDelete = async (req, res) => {
     try {
         const user = await user_service.deleteUser(req.params.id)
 
@@ -71,6 +69,14 @@ router.delete('/users/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-})
+}
 
-module.exports = router
+module.exports = {
+    userPost: userPost,
+    userGet: userGet,
+    userGetId: userGetId,
+    userPatch: userPatch,
+    userDelete: userDelete
+}
+
+

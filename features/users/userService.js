@@ -1,4 +1,4 @@
-const user_repo = require('./user_repository')
+const user_repo = require('./userRepository')
 
 const saveUser = async (user) => {
     await user_repo.saveUser(user);
