@@ -1,7 +1,12 @@
 const User = require('./user')
 
+const matchCredentials = async (email, pass) => {
+    return await User.findByCredentials(email, pass)
+}
+
 const saveUser = async (user) => {
     await user.save()
+
 }
 
 const findUser = async () => {
@@ -25,5 +30,6 @@ module.exports = {
     findUser: findUser,
     findUserById: findUserById,
     findByIdAndUpdate: findByIdAndUpdate,
-    findByIdAndDelete: findByIdAndDelete
+    findByIdAndDelete: findByIdAndDelete,
+    matchCredentials: matchCredentials
 }

@@ -1,23 +1,27 @@
-const user_repo = require('./userRepository')
+const userRepository = require('./userRepository')
+
+const matchCredentials = async (email, pass) => {
+    return await userRepository.matchCredentials(email, pass)
+}
 
 const saveUser = async (user) => {
-    await user_repo.saveUser(user);
+    await userRepository.saveUser(user);
 }
 
 const listUsers = async () => {
-    return await user_repo.findUser();
+    return await userRepository.findUser();
 }
 
 const findUser = async (_id) => {
-    return await user_repo.findUserById(_id)
+    return await userRepository.findUserById(_id)
 }
 
 const updateUser = async (_id, body, options) => {
-    return await user_repo.findByIdAndUpdate(_id, body, options)
+    return await userRepository.findByIdAndUpdate(_id, body, options)
 }
 
 const deleteUser = async (_id) => {
-    await user_repo.findByIdAndDelete(_id)
+    await userRepository.findByIdAndDelete(_id)
 }
 
 module.exports = {
@@ -25,5 +29,6 @@ module.exports = {
     listUsers: listUsers,
     findUser: findUser,
     updateUser: updateUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+    matchCredentials: matchCredentials
 }
