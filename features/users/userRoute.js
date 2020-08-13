@@ -1,5 +1,6 @@
 const userController = require('./userController')
 const auth = require('../../middleware/auth')
+const { upload } = require('../../middleware/multer')
 
 const userRouter = (router) => {
     router.post('/users/login', userController.login)
@@ -9,6 +10,9 @@ const userRouter = (router) => {
     router.get('/users/me', auth, userController.userProfile)
     router.patch('/users/me', auth, userController.updateUser)
     router.delete('/users/me', auth, userController.deleteUser)
+
+    router.post('/users/me/avatar', auth, upload.single('upload'), userController.addAvatar)
+    router.get('/users/me/avatar', auth, userController.showAvatar)
 }
 
 module.exports.userRouter = userRouter

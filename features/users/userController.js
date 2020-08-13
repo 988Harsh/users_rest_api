@@ -1,3 +1,4 @@
+const sharp = require('sharp')
 const User = require('./user')
 const userService = require('./userService')
 
@@ -46,20 +47,6 @@ const userProfile = async (req, res) => {
     res.send(req.user)
 }
 
-// const userGetId = async (req, res) => {
-//     const _id = req.params.id
-
-//     try {
-//         const user = await userService.findUser(_id)
-//         if (!user) {
-//             return res.status(404).send()
-//         }
-
-//         res.send(user)
-//     } catch (e) {
-//         res.status(500).send()
-//     }
-// }
 
 const updateUser = async (req, res) => {
 
@@ -90,15 +77,42 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const addAvatar = async (req, res) => {
+
+    const buffer = await sharp(req.file.buffer)
+        .resize({ width: 500, height: 500 })
+        .png()
+        .toBuffer()
+
+    req.user.avatar = buffer
+    await userService.saveUser(req.user)
+    res.send()
+}
+
+const showAvatar = async (req, res) => {
+    try {
+        const user = await userService.findUser(req.user._id)
+        if (!user || !user.avatar) {
+            throw new Error()
+        }
+
+        res.set('Content-Type', 'image/png')
+        res.send(user.avatar)
+    } catch (err) {
+        res.status(500).send()
+    }
+}
+
 module.exports = {
     insertUser: insertUser,
     userProfile: userProfile,
-    // userGetId: userGetId,
     updateUser: updateUser,
     deleteUser: deleteUser,
     login: login,
     logout: logout,
-    logoutAll: logoutAll
+    logoutAll: logoutAll,
+    addAvatar: addAvatar,
+    showAvatar: showAvatar
 }
 
 

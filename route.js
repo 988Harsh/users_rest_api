@@ -6,9 +6,5 @@ const configureRoutes = (router) => {
     taskRouter.taskRouter(router)
 }
 
-const routes = function (app, router) {
-    app.use(router)
-}
-
-module.exports.routes = routes
+// module.exports.routes = routes
 module.exports.configureRoutes = configureRoutes
