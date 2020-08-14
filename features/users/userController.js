@@ -34,12 +34,22 @@ const logoutAll = async (req, res) => {
 
 const insertUser = async (req, res) => {
     const user = new User(req.body)
+    user.role = 'USER'
     try {
         await userService.saveUser(user)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
     } catch (e) {
         res.status(400).send(e)
+    }
+}
+
+const showAllUsers = async (req, res) => {
+    try {
+        let users = await userService.listUsers();
+        res.send(users)
+    } catch (err) {
+        res.status(500).send()
     }
 }
 
@@ -79,12 +89,14 @@ const deleteUser = async (req, res) => {
 
 const addAvatar = async (req, res) => {
 
+
     const buffer = await sharp(req.file.buffer)
         .resize({ width: 500, height: 500 })
         .png()
         .toBuffer()
 
     req.user.avatar = buffer
+
     await userService.saveUser(req.user)
     res.send()
 }
@@ -112,7 +124,8 @@ module.exports = {
     logout: logout,
     logoutAll: logoutAll,
     addAvatar: addAvatar,
-    showAvatar: showAvatar
+    showAvatar: showAvatar,
+    showAllUsers: showAllUsers
 }
 
 

@@ -8,7 +8,10 @@ const auth = async (req, res, next) => {
         const decoded = jwt.verify(token, 'hello')
 
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-
+        if (req.originalUrl === '/users/' && req.method === 'GET') {
+            if (user.role === 'ADMIN') next()
+            else res.status(401).send('You are not Authorized to access this page!!')
+        }
         if (!user) {
             throw new Error()
         }

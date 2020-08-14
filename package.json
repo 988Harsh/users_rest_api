@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "load-dev": "env-cmd ./config/dev.env",
     "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.2.3",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
@@ -19,5 +21,6 @@
     "nodemon": "^2.0.4",
     "sharp": "^0.25.4",
     "validator": "^13.1.1"
-  }
+  },
+  "devDependencies": {}
 }
