@@ -9,8 +9,8 @@ const saveUser = async (user) => {
 
 }
 
-const findUser = async () => {
-    return await User.find({})
+const findUser = async (page) => {
+    return await User.find({}, null, { limit: 3, skip: 3 * (page - 1) });
 }
 
 const findUserById = async (_id) => {
@@ -22,7 +22,7 @@ const findByIdAndUpdate = async (_id, body, options) => {
 }
 
 const findByIdAndDelete = async (_id) => {
-    await User.findByIdAndDelete(_id)
+    return await User.findByIdAndDelete(_id)
 }
 
 module.exports = {

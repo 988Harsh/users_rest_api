@@ -20,28 +20,38 @@ const listTasks = async (req, res) => {
         // const tasks = await taskService.listTasks(req.user._id)
         // await req.user.populate('tasks').execPopulate()  <-- For all tasks
 
+        if (req.role === 'ADMIN') {
+            const tasks = await Task.find({}, null, { limit: 3, skip: (req.query.page - 1) * 3 })
+            const count = await Task.count('_id');
+            // console.log(count, " ", tasks);
+            res.status(200).send({ tasks, count })
+        }
+
         let match = {}
         let sort = {}
 
-        if (req.query.sortBy) {
-            const parts = req.query.sortBy.split(',')
-            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
-        }
+        // if (req.query.sortBy) {
+        //     const parts = req.query.sortBy.split(',')
+        //     sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+        // }
 
-        if (req.query.completed) {
-            match.completed = req.query.completed === 'true'
-        }
-
+        // if (req.query.completed) {
+        //     match.completed = req.query.completed === 'true'
+        // }
+        let count = await Task.count({ owner: req.user._id });
+        // console.log(count);
         await req.user.populate({
             path: 'tasks',
-            match,
+            // match,
+
             options: {
-                limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip),
-                sort
+                limit: 3,
+                skip: (req.query.page - 1) * 3,
+                // sort
             }
         }).execPopulate()
-        res.send(req.user.tasks)
+        let tasks = req.user.tasks;
+        res.send({ tasks, count })
     } catch (e) {
         res.status(500).send()
     }
@@ -60,6 +70,18 @@ const fetchTask = async (req, res) => {
         res.send(task)
     } catch (e) {
         res.status(500).send()
+    }
+}
+
+const showAllTasks = async (req, res) => {
+    console.log("Here");
+    try {
+        const tasks = await Task.find({}, null, { limit: 3, skip: (req.query.page - 1) * 3 })
+        const count = await Task.count('_id');
+        console.log(count, " ", tasks);
+        res.status(200).send({ tasks, count })
+    } catch (error) {
+        res.status(400).send({ error: "Error fetching tasks" });
     }
 }
 
@@ -94,7 +116,7 @@ const deleteTask = async (req, res) => {
     try {
         const task = await taskService.deleteTask(req.params.id, req.user._id)
         if (!task) {
-            res.status(404).send()
+            res.status(404).send({ error: "No such task!" })
         }
 
         res.send(task)
@@ -108,5 +130,6 @@ module.exports = {
     listTasks: listTasks,
     fetchTask: fetchTask,
     updateTask: updateTask,
-    deleteTask: deleteTask
+    deleteTask: deleteTask,
+    showAllTasks: showAllTasks,
 }

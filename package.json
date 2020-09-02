@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "load-dev": "env-cmd ./config/dev.env",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "test": "jest --watch --runInBand"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "",
   "license": "ISC",
@@ -13,14 +17,20 @@
     "@sendgrid/mail": "^7.2.3",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.0",
     "mongoose": "^5.9.28",
     "multer": "^1.4.2",
     "nodemon": "^2.0.4",
+    "paginate": "^0.2.0",
     "sharp": "^0.25.4",
     "validator": "^13.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^26.4.0",
+    "supertest": "^4.0.2"
+  }
 }

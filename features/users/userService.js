@@ -8,8 +8,8 @@ const saveUser = async (user) => {
     await userRepository.saveUser(user);
 }
 
-const listUsers = async () => {
-    return await userRepository.findUser();
+const listUsers = async (page) => {
+    return await userRepository.findUser(page);
 }
 
 const findUser = async (_id) => {
@@ -21,7 +21,7 @@ const updateUser = async (_id, body, options) => {
 }
 
 const deleteUser = async (_id) => {
-    await userRepository.findByIdAndDelete(_id)
+    return await userRepository.findByIdAndDelete(_id)
 }
 
 module.exports = {

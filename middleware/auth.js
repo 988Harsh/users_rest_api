@@ -6,19 +6,19 @@ const auth = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '')
 
         const decoded = jwt.verify(token, 'hello')
-
+        const role = decoded.role;
+        console.log(role);
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-        if (req.originalUrl === '/users/' && req.method === 'GET') {
-            if (user.role === 'ADMIN') next()
-            else res.status(401).send('You are not Authorized to access this page!!')
-        }
+
         if (!user) {
             throw new Error()
         }
         req.token = token
         req.user = user
+        req.role = role
     } catch (err) {
-        res.status(400).send("error: Please Authenticate First!")
+        console.log(err);
+        res.status(401).send("error: Please Authenticate First!")
     }
     next()
 }

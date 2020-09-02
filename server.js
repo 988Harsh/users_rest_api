@@ -1,15 +1,10 @@
-const express = require('express')
-const routeFile = require('./route')
-require('./features/mongoose')
-const app = express()
+
+const { access } = require('./middleware/access')
+const app = require('./app')
 const port = process.env.PORT || 3000
-app.use(express.json())
 
-const router = express.Router()
 
-routeFile.configureRoutes(router)
-app.use(router)
-
+// app.use(access)
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
 })

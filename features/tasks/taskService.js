@@ -17,7 +17,7 @@ const updateTask = async (_id, body, options) => {
 }
 
 const deleteTask = async (_id, owner_id) => {
-    await taskRepository.findByIdAndDelete(_id, owner_id)
+    return await taskRepository.findByIdAndDelete(_id, owner_id)
 }
 
 module.exports = {

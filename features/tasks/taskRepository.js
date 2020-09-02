@@ -19,7 +19,7 @@ const findByIdAndUpdate = async (_id, body, options) => {
 }
 
 const findByIdAndDelete = async (_id, owner_id) => {
-    await Task.findOneAndDelete({ _id, owner: owner_id })
+    return await Task.findOneAndDelete({ _id, owner: owner_id })
 }
 
 module.exports = {
